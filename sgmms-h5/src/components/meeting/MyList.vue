@@ -23,7 +23,7 @@
             </card-preview>
             <div class="loading">
                 <mt-spinner type="triple-bounce" v-show="loading.stat"></mt-spinner>
-                <span v-show="!loading.stat" v-text="loading.msg"></span>
+                <span v-show="!loading.stat" class="loading_msg">—————&nbsp;&nbsp;&nbsp;{{loading.msg}}&nbsp;&nbsp;&nbsp;—————</span>
             </div>
         </div>
     </div>
@@ -62,7 +62,7 @@
                 getMeetingList({ page: this.page, size: this.size }).then(res => {
                     this.total_page = res.total_pages
                     if (res.content && (res.content.length <= 0 || res.total_pages == this.page + 1)) {
-                        this.loading = { stat: false, msg: '已经到底啦' };
+                        this.loading = { stat: false, msg: '我是有底线的' };
                     }
                     if (this.refetch) {
                         this.dataList = this.dataList.concat(res.content);
