@@ -1,0 +1,53 @@
+.ui-jqgrid .ui-jqgrid-view {
+	font-family: Microsoft YaHei,'宋体' , Tahoma, Helvetica, Arial, "\5b8b\4f53", sans-serif;
+	font-size: 14px;
+	font-weight: normal;
+}
+/* 好像不起作用 ，只有在源码设置 /tds/static/jqGrid_4.8.2/css/ui.jqgrid.css*/
+.ui-jqgrid .ui-pg-selbox, .ui-jqgrid .ui-jqgrid-toppager .ui-pg-selbox {
+	height: 22px;
+}
+/* 好像不起作用 ，只有在源码设置 /tds/static/jqGrid_4.8.2/css/ui.jqgrid.css*/
+.ui-jqgrid .ui-pg-input, .ui-jqgrid .ui-jqgrid-toppager .ui-pg-input {
+height: 22px;
+}
+
+.ui-jqgrid .ui-jqgrid-view input {
+	font-size: 14px;
+}
+
+.ui-jqgrid tr.ui-row-ltr td {
+    border-right-color: inherit;
+    border-right-style: dashed;
+    border-right-width: 1px;
+    text-align: left;
+}
+
+.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
+    border: 1px solid #ccc;
+    font-weight: bold;
+    color: #1c94c4;
+}
+
+.ui-th-column, .ui-jqgrid .ui-jqgrid-htable th.ui-th-column {
+    border-bottom: 0 none;
+    border-top: 0 none;
+    overflow: hidden;
+    text-align: center;
+    white-space: nowrap;
+    background: #3F9FD9;
+    color: #f6f6f6;
+    height: 32px;
+}
+
+.ui-jqgrid tr.jqgrow td {
+    border-bottom: none;
+    font-weight: normal;
+    overflow: hidden;
+    padding: 5px;
+    white-space: pre;
+}
+
+.myAltRowClass {
+   background: #F1F1F1;
+}

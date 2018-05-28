@@ -1,0 +1,145 @@
+﻿
+<!doctype html>
+<html>
+<head>
+  <title>Demo &raquo; Add widgets dynamically &raquo; gridster.js</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="../bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="gridsters/jquery.gridster.css">
+	<link rel="stylesheet" type="text/css" href="gridster/demo.css">
+	<link rel="stylesheet" type="text/css" href="highchartss/demo.css">
+	<script type="text/javascript" src="../jquery/jquery-1.11.3.min.js"></script>
+	<script src="../bootstrap/3.3.4/js/bootstrap.min.js"></script>
+	<script src="gridsters/jquery.gridster.js" type="text/javascript" charset="utf-8"></script>
+	<script src="highcharts/highcharts.js"></script>
+	<script src="highcharts/highcharts-3d.js"></script>
+	<script src="highcharts/modules/exporting.js"></script>
+	<script type="text/javascript" id="code">
+    var gridster;
+    $(function(){
+      gridster = $(".gridster > ul").gridster({
+          widget_margins: [5, 5],
+          widget_base_dimensions: [250, 150]
+      }).data('gridster');
+      var widgets = [
+          ['<li><div class="btn-group"><button type="button" class="btn btn-default">Button1</button><button type="button" class="btn btn-default">Button2</button></div></li>', 1, 1],
+          ['<li>'+$('#piechart').html()+'</li>', 2, 2],
+          ['<li>'+$('#panel').html()+'</li>', 1, 1],
+          ['<li>'+$('#panel').html()+'</li>', 1, 1],
+          ['<li>'+$('#panel').html()+'</li>', 1, 1],
+          ['<li>'+$('#panel').html()+'</li>', 1, 2],
+          ['<li>'+$('#panel').html()+'</li>', 2, 1],
+          ['<li>'+$('#panel').html()+'</li>', 1, 2],
+          ['<li>'+$('#panel').html()+'</li>', 1, 1],
+          ['<li>'+$('#panel').html()+'</li>', 2, 1],
+          ['<li>'+$('#panel').html()+'</li>', 1, 1]
+      ];
+
+      $.each(widgets, function(i, widget){
+          gridster.add_widget.apply(gridster, widget)
+      });
+	 $('#chartContainer').highcharts({
+        chart: {
+            type: 'pie',
+			 margin: [0, 0, 0, 0],
+            options3d: {
+                enabled: true,
+                alpha: 45,
+                beta: 0
+            }
+        },
+        title: {
+            text : '',
+			align:	'left'
+        },
+        tooltip: {
+            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+        },
+        plotOptions: {
+            pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                depth: 10,
+                dataLabels: {
+                    enabled: true,
+                    format: '{point.name}'
+                }
+            }
+        },
+        series: [{
+            type: 'pie',
+            name: '浏览器市场份额1',
+            data: [
+                ['Firefox',   45.0],
+                ['IE',       26.8],
+                {
+                    name: 'Chrome',
+                    y: 12.8,
+                    sliced: true,
+                    selected: true
+                },
+                ['Safari',    8.5],
+                ['Opera',     6.2],
+                ['Others',   0.7]
+            ]
+        }]
+    }); 
+ });
+
+    </script>
+</head>
+
+<body>
+<div class="panel panel-default">
+   <div class="panel-heading">
+      <h3 class="panel-title">
+        桌面编辑器
+      </h3>
+		<div class="btn-group" style="float:right;top:-25px;vertical-align:top;">
+			<button type="button" class="btn btn-default">添加组件</button>
+			<button type="button" class="btn btn-default">保存配置</button>
+		</div>
+  </div>
+   <div class="panel-body">
+		<div class="gridster">
+			<ul></ul>
+		</div>
+   </div>
+</div>
+
+	<div id="panel"  style="display:none">
+		<div  class="panel panel-default" style="height:100%">
+			<div class="panel-heading">
+				<h3 class="panel-title">组件标题</h3>
+				<div class="btn-group" style="float:right;top:-25px;vertical-align:top;">
+				<button type="button" class="btn btn-default">刷新</button>
+				<button type="button" class="btn btn-default">关闭</button>
+				</div>
+			</div>
+			<div class="panel-body" style=" position: absolute;right:1px;left:1px;top:40px;bottom:36px;">
+				这里是组件的内容区
+			</div>
+			<div class="panel-footer" style="position: absolute;right:1px;left:1px;bottom:0px;">
+				组件下脚
+			</div>
+		</div>
+	</div>
+	<div id="piechart"  style="display:none">
+		<div  class="panel panel-default" style="height:100%">
+			<div class="panel-heading">
+				<h3 class="panel-title">组件标题</h3>
+				<div class="btn-group" style="float:right;top:-25px;vertical-align:top;">
+				<button type="button" class="btn btn-default">刷新</button>
+				<button type="button" class="btn btn-default">关闭</button>
+				</div>
+			</div>
+			<div class="panel-body" style=" position: absolute;right:1px;left:1px;top:40px;bottom:36px;">
+					<div id="chartContainer" style="height: 100%"></div>			
+			</div>
+			<div class="panel-footer" style="position: absolute;right:1px;left:1px;bottom:0px;">
+				组件下脚
+			</div>
+		</div>
+	</div>
+</body>
+</html>

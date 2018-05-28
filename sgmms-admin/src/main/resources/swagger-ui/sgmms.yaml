@@ -1,0 +1,542 @@
+swagger: '2.0'
+info:
+  version: v1
+  title: 韶关公安会议系统
+  description: 韶关公安会议信息化平台，参会人员可以通过手机微信公众号查看会议安排。在整个培训过程中，即可可通过微信公众号扫一扫功能，完成签到、就餐、移动学习等会议服务。
+host: localhost
+basePath: /sgmms
+tags:
+  - name: 认证模块
+    description: 登陆、验证码
+  - name: 会议模块
+    description: 会议列表、会议详情、签到
+  - name: 就餐模块
+    description: 就餐记录、就餐凭证
+paths:
+  /api/verificationCode:
+    post:
+      tags:
+        - 认证模块
+      summary: 发送验证码
+      description: 发送验证码
+      operationId: verificationCode
+      consumes:
+        - application/x-www-form-urlencoded
+      produces:
+        - application/json
+      parameters:
+        - name: mobile
+          in: formData
+          description: 手机号码
+          required: true
+          type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Wrapper'
+          examples:
+            application/json:
+              success: true
+  /api/authentication:
+    post:
+      tags:
+        - 认证模块
+      summary: 验证码登陆
+      description: 验证码登陆
+      operationId: authenticate
+      consumes:
+        - application/x-www-form-urlencoded
+      produces:
+        - application/json
+      parameters:
+        - name: mobile
+          in: formData
+          description: 手机号码
+          required: true
+          type: string
+        - name: verification_code
+          in: formData
+          description: 短信验证码
+          required: true
+          type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/TokenBeanWrapper'
+          examples:
+            application/json:
+              success: true
+              expires_in: 7200
+              access_token: eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJpbmZpbml0dXMiLCJpYXQiOjE1MjIwMzUxNTUsImV4cCI6MTU1MzU3MTE1NSwiYXVkIjoidGlzc2lvbiIsInN1YiI6IkMwMDAwMDAwMjczIn0.Ml_yEAQgCyBy6WzF2XmCsegOATQZcKCUvcnqGoRE518
+  /api/conference:
+    get:
+      tags:
+        - 会议模块
+      summary: 会议列表
+      description: 会议列表的模型不加载会议议程、注意事项这二个大字段，也没有附件列表。
+      operationId: conferences
+      consumes:
+        - application/x-www-form-urlencoded
+      produces:
+        - application/json
+      parameters:
+        - name: Authorization
+          in: header
+          description: 令牌，前缀必须拼接Bearer ，注意：Bearer后有一个英文空格。
+          required: true
+          type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/ConferencePagedWrapper'
+          examples:
+            application/json:
+              success: true
+              total_pages: 1
+              total_elements: 1
+              content:
+                - title: 全国政协常委会
+                  code: qwqrterw
+                  begin_time: '2018-05-07 14:00:00'
+                  end_time: '2018-05-07 16:00:00'
+                  status: ENDED
+                  location: 华利路31号3015室
+                  total_users: 32
+  /api/conference/{conference_code}:
+    get:
+      tags:
+        - 会议模块
+      summary: 会议详情
+      description: 比会议列表的模型，多了三个信息：会议议程、注意事项、附件列表。
+      operationId: conference
+      consumes:
+        - application/x-www-form-urlencoded
+      produces:
+        - application/json
+      parameters:
+        - name: Authorization
+          in: header
+          description: 令牌，前缀必须拼接Bearer ，注意：Bearer后有一个英文空格。
+          required: true
+          type: string
+        - name: conference_code
+          in: path
+          type: string
+          required: true
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/ConferenceBeanWrapper'
+          examples:
+            application/json:
+              title: 全国政协常委会
+              code: wafoep
+              begin_time: '2018-05-07 14:00:00'
+              end_time: '2018-05-07 16:00:00'
+              status: ENDED
+              venue: 华利路31号3015室
+              agendum: 会议议程
+              attention: 注意事项
+              total_users: 32
+              attachment:
+                - title: 全国政协常委会
+                  name: 20180517.pdf
+                  uri: http://www.test.com/test.pdf
+  /api/conference/{conference_code}/attendance:
+    get:
+      tags:
+        - 会议模块
+      summary: 签到记录
+      operationId: attendances
+      consumes:
+        - application/x-www-form-urlencoded
+      produces:
+        - application/json
+      parameters:
+        - name: Authorization
+          in: header
+          description: 令牌，前缀必须拼接Bearer ，注意：Bearer后有一个英文空格。
+          required: true
+          type: string
+        - name: conference_code
+          in: path
+          type: string
+          required: true
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/AttendanceListWrapper'
+          examples:
+            application/json:
+              success: true
+              content:
+                - begin_date: '2018-05-07 下午'
+                  begin_time: '14:00'
+                  end_time: '16:00'
+                  attendance_result: 已签到
+                  arrival_time: '2018-05-07 13:58:00'
+    post:
+      tags:
+        - 会议模块
+      summary: 签到
+      operationId: attendance
+      consumes:
+        - 'application/x-www-form-urlencoded'
+      produces:
+        - "application/json"
+      parameters:
+        - name: Authorization
+          in: header
+          description: 令牌，前缀必须拼接Bearer ，注意：Bearer后有一个英文空格。
+          required: true
+          type: string
+        - name: conference_code
+          in: path
+          description: 会议编号
+          type: string
+          required: true
+        - name: attendance_id
+          in: query
+          description: 考勤标识，该字段从二维码里取
+          type: string
+          required: true
+        - name: location
+          in: query
+          description: 当前位置
+          type: string
+          required: false
+        - name: lng
+          in: query
+          description: 经度
+          type: number
+          format: double
+          required: false
+        - name: lat
+          in: query
+          description: 纬度
+          type: number
+          format: double
+          required: false
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/ArrivalBeanWrapper'
+          examples:
+            application/json:
+              success: true
+              conference_title: 全国政协常委会
+              compellation: 李晓得
+              mobile: '13858538712'
+              begin_time: '2018-05-07 14:00'
+              end_time: '2018-05-07 16:00'
+              arrival_time: '13:55'
+  /api/conference/{conference_code}/meal:
+    get:
+      tags:
+        - 就餐模块
+      summary: 就餐记录
+      description: 就餐记录
+      operationId: meals
+      consumes:
+        - application/x-www-form-urlencoded
+      produces:
+        - application/json
+      parameters:
+        - name: Authorization
+          in: header
+          description: 令牌，前缀必须拼接Bearer ，注意：Bearer后有一个英文空格。
+          required: true
+          type: string
+        - name: conference_code
+          in: path
+          type: string
+          required: true
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/MealListWrapper'
+          examples:
+            application/json:
+              success: true
+              content:
+                - begin_date: '2018-05-07 下午'
+                  begin_time: '14:00'
+                  end_time: '16:00'
+                  location: '东区饭堂'
+                  meal_time: '2018-05-07 17:35:41'
+    post:
+      tags:
+        - 就餐模块
+      summary: 就餐
+      operationId: meal
+      consumes:
+        - application/x-www-form-urlencoded
+      produces:
+        - application/json
+      parameters:
+        - name: Authorization
+          in: header
+          description: 令牌，前缀必须拼接Bearer ，注意：Bearer后有一个英文空格。
+          required: true
+          type: string
+        - name: conference_code
+          in: path
+          type: string
+          required: true
+        - name: meal_id
+          in: query
+          type: string
+          required: true
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/EvidenceBeanWrapper'
+          examples:
+            application/json:
+              success: true
+              conference_title: 全国政协常委会
+              compellation: 张天德
+              mobile: 13878348751
+              meal_status: OPEN
+              meal_location: 东区饭堂
+              meal_reserve: Y
+              total_scan: 0
+definitions:
+  PageMixin:
+    type: object
+    properties:
+      total_pages:
+        type: integer
+        format: int32
+        description: 总页数
+      total_elements:
+        type: integer
+        format: int64
+        description: 总记录数
+  Wrapper:
+    type: object
+    properties:
+      success:
+        type: boolean
+        description: 是否成功
+  Token:
+    type: object
+    properties:
+      expires_in:
+        type: integer
+        description: 过期时间
+      access_token:
+        type: string
+        description: 授权凭证
+  TokenBeanWrapper:
+    allOf:
+      - $ref: '#/definitions/Wrapper'
+      - $ref: '#/definitions/Token'
+  Conference:
+    type: object
+    properties:
+      title:
+        type: string
+        description: 会议名称
+      code:
+        type: string
+        description: 会议编号
+      begin_time:
+        type: string
+        description: 会议开始时间，格式为yyyy-mm-dd hh:mi:ss
+      end_time:
+        type: string
+        description: 会议结束时间，格式为yyyy-mm-dd hh:mi:ss
+      status:
+        type: string
+        description: 会议状态，枚举值
+        enum:
+          - UNSTART
+          - STARTED
+          - ENDED
+      venue:
+        type: string
+        description: 会议地点
+      total_users:
+        type: number
+        format: int32
+        description: 会议人数
+  ConferenceBeanWrapper:
+    allOf:
+      - $ref: '#/definitions/Wrapper'
+      - $ref: '#/definitions/Conference'
+      - properties:
+          agendum:
+            type: string
+            description: 会议议程
+          attention:
+            type: string
+            description: 注意事项
+          attachments:
+            type: array
+            items:
+              $ref: '#/definitions/Attachment'
+  Attachment:
+    type: object
+    properties:
+      title:
+        type: string
+        description: 文件标题
+      name:
+        type: string
+        description: 文件名
+      uri:
+        type: string
+        description: 下载地址
+  ConferencePagedWrapper:
+    allOf:
+      - $ref: '#/definitions/Wrapper'
+      - properties:
+          content:
+            type: array
+            items:
+              $ref: '#/definitions/Conference'
+      - $ref: '#/definitions/PageMixin'
+  Attendance:
+    type: object
+    properties:
+      begin_date:
+        type: string
+        description: 考勤日期，格式为yyyy-MM-dd a
+      begin_time:
+        type: string
+        description: 签到开始时间，格式为hh:mi
+      end_time:
+        type: string
+        description: 签到结束时间，格式为hh:mi
+      attendance_result:
+        type: string
+        description: 考勤结果，C为迟到，W为未签到，Y为已签到
+      arrival_time:
+        type: string
+        description: 签到时间，格式为yyyy-mm-dd hh:mi:ss
+  AttendanceListWrapper:
+    allOf:
+      - $ref: '#/definitions/Wrapper'
+      - properties:
+          content:
+            type: array
+            items:
+              $ref: '#/definitions/Attendance'
+  ArrivalBeanWrapper:
+    allOf:
+      - $ref: '#/definitions/Wrapper'
+      - properties:
+          conference_title:
+            type: string
+            description: 会议名称
+          compellation:
+            type: string
+            description: 姓名
+          mobile:
+            type: string
+            description: 手机
+          begin_time:
+            type: string
+            description: 考勤开始时间
+          end_time:
+            type: string
+            description: 考勤结束时间
+          arrival_time:
+            type: string
+            description: 签到时间，格式为hh:mi
+          attendance_result:
+            type: string
+            description: 考勤结果，C为迟到，W为未签到，Y为已签到
+  Meal:
+    type: object
+    properties:
+      begin_date:
+        type: string
+        description: 就餐日期，格式为yyyy-MM-dd a
+      begin_time:
+        type: string
+        description: 就餐到开始时间，格式为hh:mi
+      end_time:
+        type: string
+        description: 就餐结束时间，格式为hh:mi
+      location:
+        type: string
+        description: 就餐地点
+      meal_time:
+        type: string
+        description: 就餐时间
+      meal_result:
+        type: string
+        description: 是否就餐，Y：已就餐，N：未就餐
+  MealListWrapper:
+    allOf:
+      - $ref: '#/definitions/Wrapper'
+      - properties:
+          content:
+            type: array
+            items:
+              $ref: '#/definitions/Meal'
+  EvidenceBeanWrapper:
+    allOf:
+      - $ref: '#/definitions/Wrapper'
+      - properties:
+          conference_title:
+            type: string
+            description: 会议名称
+          compellation:
+            type: string
+            description: 姓名
+          mobile:
+            type: string
+            description: 手机
+          meal_location:
+            type: string
+            description: 就餐地点
+          meal_status:
+            type: string
+            description: 餐馆状态，REST：休息，OPEN：营业中
+          meal_reserve:
+            type: string
+            description: 是否订餐，Y：可以就餐，N：不能就餐
+          total_scan:
+            type: number
+            format: int32
+            description: 扫码次数
+  APIError:
+    type: object
+    properties:
+      reason:
+        type: string
+        description: 错误原因
+        enum:
+          - ValidationError
+          - IllegalArgument
+          - InternalError
+          - NotFound
+      message:
+        type: string
+        description: 错误描述
+      errors:
+        type: array
+        items:
+          type: object
+          properties:
+            field:
+              type: string
+              description: 属性名
+            message:
+              type: string
+              description: 错误信息
+  APIErrorBeanWrapper:
+    allOf:
+      - $ref: '#/definitions/Wrapper'
+      - $ref: '#/definitions/APIError'

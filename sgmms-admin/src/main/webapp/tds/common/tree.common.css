@@ -1,0 +1,25 @@
+div#rMenu {
+	position:absolute;
+	visibility:hidden;
+	top:0; 
+	border: 1px solid #337ab7;
+	text-align: left;
+	padding: 2px;
+	background-color: white;
+}
+div#rMenu ul{
+	padding: 5px;
+}
+div#rMenu ul li{
+	margin: 1px 0;
+	/*padding: 0 5px;*/
+	cursor: pointer;
+	list-style: none outside none;
+	background-color: white;
+	/*border-bottom: 1px solid #337ab7;*/
+	padding: 2px;
+}
+div#rMenu ul li:hover{
+	background-color: #337ab7;
+	color: white;
+}

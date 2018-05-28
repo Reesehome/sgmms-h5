@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+        xmlns="http://www.springframework.org/schema/beans"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:util="http://www.springframework.org/schema/util"
+        xsi:schemaLocation="http://www.springframework.org/schema/beans
+    					http://www.springframework.org/schema/beans/spring-beans.xsd
+    					http://www.springframework.org/schema/util
+						http://www.springframework.org/schema/util/spring-util-4.1.xsd">
+
+    <bean id="tdsConfigration" class="com.tisson.tds.common.utils.TdsConfigration">
+
+        <!-- 平台名称，该名称显示在登录页面或主界面的左上角 -->
+        <property name="appTitle" value="中国电信-云管理平台"/>
+
+        <!-- 平台logo -->
+        <property name="appIcon" value="/tds/index/css/img/logo.png"/>
+
+        <!-- 登录页面，路径是从/WEB-INF/views/开始 -->
+        <property name="loginPage" value="/tds/login/login.jsp"/>
+
+        <!-- 登录成功后，主页面的jsp文件，路径是从/WEB-INF/views/开始 -->
+        <property name="homePage" value="/tds/login/index.jsp"/>
+
+        <!-- 登录时是否需要验证码 -->
+        <property name="useVerifyCode" value="false"/>
+
+        <!-- FTP端口 -->
+        <property name="ftpIp" value="172.16.27.110"/>
+
+        <!-- FTP端口 -->
+        <property name="ftpPort" value="8787"/>
+
+        <!-- FTP登录账号-->
+        <property name="ftpAccount" value="tisson"/>
+
+        <!-- FTP密码 -->
+        <property name="ftpPassword" value="p"/>
+
+        <!-- FTP中存放附件的根目录 -->
+        <property name="ftpBasePath" value="/tisson/"/>
+
+        <!-- 不受保护的url前缀列表 -->
+        <property name="unfilteredUrls">
+            <list>
+                <value>/tds/</value>
+                <value>/upload/</value>
+                <value>/login.jsp</value>
+                <value>/login/login.do</value>
+                <value>/login/loginByThirdPartyApp.do</value>
+                <value>/login/changeLanguage.do</value>
+                <value>/login/generateVerifyCode.do</value>
+                <value>/login/loadLanguage.do</value>
+                <value>/webjars/</value>
+                <value>/api</value>
+            </list>
+        </property>
+
+        <property name="menuIconConfig">
+            <!-- 菜单图标的路径配置，key为菜单为类名， value为路径 -->
+            <util:map id="menuIconConfig" key-type="java.lang.String" value-type="java.lang.String">
+                <!-- 系统默认的图标 -->
+                <entry key="基础平台图标" value="/tds/static/images/module-icon/"/>
+
+                <entry key="XX项目图标" value="/tds/static/images/fire-control-icon/"/>
+            </util:map>
+        </property>
+    </bean>
+
+    <!--
+        机构新增监听器(com.tisson.tds.org.organization.listener.OrganizationAddListener),
+        实现这个接口后，可以监听新增机构前、后的事件。GrentAuthorizeToParentUser为默认的实现类，
+        用于 把新添加的部门授权给其上级部门（所有上级部门）的所有用户，让其对上级部部门的所有用户可见。
+    -->
+    <bean class="com.tisson.tds.org.organization.listener.impl.GrentAuthorizeToParentUser"/>
+
+    <!--
+        机构新增监听器(com.tisson.tds.org.organization.listener.OrganizationDeleteListener),
+        实现这个接口后，可以监听删除机构事件
+    -->
+    <!-- <bean class="com.tisson.xxx.impl.OrganizationDeleteListenerImpl"/> -->
+
+    <!--
+        用户新增监听器(com.tisson.tds.org.organization.listener.OrgUserAddListener),
+        实现这个接口后，可以监听新增用户前、后的事件。
+    -->
+    <!-- <bean class="com.tisson.xxx.impl.xxxOrgUserAddImpl"/> -->
+
+    <!--
+        用户删除监听器(com.tisson.tds.org.organization.listener.OrgUserDeleteListener),
+        实现这个接口后，可以监听用户删除事件。
+    -->
+    <!-- <bean class="com.tisson.xxx.impl.xxxOrgUserDeleteImpl"/> -->
+
+    <!-- 登录与密码策略，配置上这个功能后，会对登录和密码进行加强 -->
+    <util:map id="loginAndPwdEnhance" key-type="java.lang.String" value-type="java.lang.Integer">
+        <!-- 设定密码要修改的时间，以天为单位 -->
+        <entry key="updateCycle" value="180"/>
+
+        <!-- 一天内允许登录错误次数，如果连续登录错误达到一定次数，账号就锁定 -->
+        <entry key="loginErrorNum" value="3"/>
+
+        <!-- 密码最小长度 -->
+        <entry key="pwdMinLength" value="8"/>
+    </util:map>
+
+    <!-- 调试器，用于定时清除旧的消息 -->
+    <bean id="sqlDayJobs" class="com.tisson.tds.job.SqlJobConfigration">
+        <property name="sqls">
+            <list>
+                <value><![CDATA[delete BAF_MESSAGE t where t.insertTime <(sysdate -30)]]></value>
+                <value><![CDATA[delete BAF_SYS_LOG t where t.logtime <(sysdate -30)]]></value>
+                <value><![CDATA[delete BAF_SYS_LOG_LOGIN t where t.logintime <(sysdate -30)]]></value>
+            </list>
+        </property>
+    </bean>
+</beans>

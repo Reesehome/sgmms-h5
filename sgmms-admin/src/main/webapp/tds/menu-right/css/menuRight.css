@@ -1,0 +1,6 @@
+#treeRightMenu,#treePanelRightMenu {
+	display: none;
+	width:180px;
+	position: absolute;
+	z-index: 1000;
+}

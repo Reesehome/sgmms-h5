@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+	<hessian-beans>
+		<!-- type=local,cluster,singleton -->
+    	<bean name="/helloService" 		type="local" interfaceClass="sxma.cluster.test.bean.IHello"     serviceClass="sxma.cluster.test.bean.HelloService" timeoutMS="30000" /> 
+	   	<bean name="/helloCluster" 		type="cluster" interfaceClass="sxma.cluster.test.bean.IHello"   serviceClass="sxma.cluster.test.bean.HelloService" timeoutMS="30000" /> 
+   		<bean name="/helloSingleton" 	type="singleton" interfaceClass="sxma.cluster.test.bean.IHello" serviceClass="sxma.cluster.test.bean.HelloService" timeoutMS="30000" /> 
+   		<bean name="/helloProxy" 		type="proxy"  url=""  serviceName="" /> 
+    	<bean name="/helloServiceXXX" 	type="local,cluster,singeton,proxy" interfaceClass="" serviceClass="" /> 
+	</hessian-beans>
+</root>

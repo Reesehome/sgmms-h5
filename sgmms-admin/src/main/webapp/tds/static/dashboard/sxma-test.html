@@ -1,0 +1,78 @@
+﻿
+<!doctype html>
+<html>
+<head>
+  <title>Demo &raquo; Add widgets dynamically &raquo; gridster.js</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="../dist/jquery.gridster.css">
+  <link rel="stylesheet" type="text/css" href="assets/demo.css">
+     <script type="text/javascript" src="assets/jquery.js"></script>
+	<script src="bootstrap/js/bootstrap.min.js"></script>
+    <script src="../dist/jquery.gridster.js" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript" id="code">
+    var gridster;
+    $(function(){
+      gridster = $(".gridster > ul").gridster({
+          widget_margins: [5, 5],
+          widget_base_dimensions: [250, 150]
+      }).data('gridster');
+      var widgets = [
+          ['<li><div class="btn-group"><button type="button" class="btn btn-default">Button1</button><button type="button" class="btn btn-default">Button2</button></div></li>', 1, 1],
+          ['<li>'+$('#panel').html()+'</li>', 2, 2],
+          ['<li>'+$('#panel').html()+'</li>', 1, 1],
+          ['<li>'+$('#panel').html()+'</li>', 1, 1],
+          ['<li>'+$('#panel').html()+'</li>', 1, 1],
+          ['<li>'+$('#panel').html()+'</li>', 1, 2],
+          ['<li>'+$('#panel').html()+'</li>', 2, 1],
+          ['<li>'+$('#panel').html()+'</li>', 1, 2],
+          ['<li>'+$('#panel').html()+'</li>', 1, 1],
+          ['<li>'+$('#panel').html()+'</li>', 2, 1],
+          ['<li>'+$('#panel').html()+'</li>', 1, 1]
+      ];
+
+      $.each(widgets, function(i, widget){
+          gridster.add_widget.apply(gridster, widget)
+      });
+
+    });
+    </script>
+</head>
+
+<body>
+<div class="panel panel-default">
+   <div class="panel-heading">
+      <h3 class="panel-title">
+        桌面编辑器
+      </h3>
+		<div class="btn-group" style="float:right;top:-25px;vertical-align:top;">
+			<button type="button" class="btn btn-default">添加组件</button>
+			<button type="button" class="btn btn-default">保存配置</button>
+		</div>
+  </div>
+   <div class="panel-body">
+		<div class="gridster">
+			<ul></ul>
+		</div>
+   </div>
+</div>
+
+	<div id="panel"  style="display:none">
+		<div  class="panel panel-default" style="height:100%">
+			<div class="panel-heading">
+				<h3 class="panel-title">组件标题</h3>
+				<div class="btn-group" style="float:right;top:-25px;vertical-align:top;">
+				<button type="button" class="btn btn-default">刷新</button>
+				<button type="button" class="btn btn-default">关闭</button>
+				</div>
+			</div>
+			<div class="panel-body" style=" position: absolute;right:1px;left:1px;top:40px;bottom:36px;">
+				这里是组件的内容区
+			</div>
+			<div class="panel-footer" style="position: absolute;right:1px;left:1px;bottom:0px;">
+				组件下脚
+			</div>
+		</div>
+	</div>
+</body>
+</html>
