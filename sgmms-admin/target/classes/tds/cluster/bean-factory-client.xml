@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root> 
+        <proxy id="default" type="hessian">
+        	<property name="url">http://localhost:8080/easy-cluster-test1/service/,http://localhost:8080/easy-cluster-test2/service/</property>
+        </proxy>
+        <proxy id="proxyEJB" type="remoteEJB">
+        	<property name="contextFactory">org.jnp.interfaces.NamingContextFactory</property>
+	       	<property name="packagePrefix">org.jboss.naming:org.jnp.interfaces</property>
+    	   	<property name="url">jnp://localhost:1099</property>
+        </proxy>
+        <proxy id="proxyLocal" type="local"   	/>
+        <proxy id="proxyCluster" type="cluster" 	/>
+        <proxy id="proxySingleton" type="singleton" />
+<!--        <defaultFactory type="local" file="/local-beans.xml" /> -->
+		<beans>
+			<bean id="helloLocal" proxyID="proxyLocal">
+     	   		<property name="serviceClass">sxma.cluster.test.bean.HelloService</property>				
+    	   		<property name="timeoutMS">500000</property>				
+			</bean> 
+			<bean id="helloCluster" proxyID="proxyCluster">
+    	   		<property name="serviceClass">sxma.cluster.test.bean.HelloService</property>				
+	   	   		<property name="timeoutMS">18000</property>				
+			</bean> 
+			<bean id="helloSingleton" proxyID="proxySingleton">
+    	   		<property name="serviceClass">sxma.cluster.test.bean.HelloService</property>				
+			</bean> 
+			<bean id="helloHessian" proxyID="default">
+    	   		<property name="serviceName">helloService</property>	
+				<property name="timeoutMS">18000</property>				
+    	   					
+			</bean> 
+			<bean id="helloHessianCluster" proxyID="default">
+    	   		<property name="serviceName">helloCluster</property>				
+			</bean> 
+			<bean id="helloHessianSingleton" proxyID="default">
+    	   		<property name="serviceName">helloSingleton</property>				
+			</bean> 
+			<bean id="helloEJB" proxyID="proxyEJB">
+    	   		<property name="serviceName">HelloService/remote</property>				
+			</bean> 
+			<include file="dao/dao-alarm.xml" />
+		</beans>
+</root>

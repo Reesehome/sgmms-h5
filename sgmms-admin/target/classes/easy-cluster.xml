@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="GB2312"?>
+<root>
+	<!-- 集群名称，集群内的服务器的clusterName一样，但不同集群之间的clusterName是唯一的。 -->
+	<clusterName>tds-cluster</clusterName>
+	
+	<!-- 集群内服务器采用的通信协议，支持udp和tcp -->
+	<propertiesFile>tds/cluster/udp.xml</propertiesFile>
+	
+	<!-- 集群运行的服务 -->
+	<hessianServletConfig>tds/cluster/hessian-servlet-config.xml</hessianServletConfig>
+	
+	<beanFactoryClientFile>tds/cluster/bean-factory-client.xml</beanFactoryClientFile>
+	
+	
+	<loadBalancePolicyClass className="sxma.cluster.DefaultLoadBalancePolicyAdapter">
+
+		<!-- 本节点做为普通节点时的负载比例 -->
+		<property key="loadWeight">100</property>
+		
+		<!-- 本节点做为代理节点时的负载比例 -->
+		<property key="loadWeightAsProxy">100</property>
+		
+		<!-- 本节点做为主节点时的负载比例 -->
+		<property key="loadWeightAsMaster">100</property>
+	</loadBalancePolicyClass>
+	<tasks>
+ 		<task name="quartz" enable="true" className="sxma.cluster.job.QuartzTaskAdapter">
+			<jobLoader>sxma.cluster.job.XMLQuartzJobLoader</jobLoader>
+			<threadCount>3</threadCount>
+			<threadPriority>4</threadPriority>
+		</task>
+	</tasks>
+	<viewChangedListeners>
+<!-- 
+ 		<viewChangedListener name="quartz" className="sxma.cluster.test.task.TestViewChangerListener" />
+-->
+	</viewChangedListeners>
+	<quartz>
+ 		<standardJob name="基础平台日结任务(一点执行)" 
+			enable="true" 
+			className="com.tisson.tds.job.TdsSqlJob" callType="local"
+			sync="true" 
+			cronExpression="0 0 1 * * ?">
+			<beanId>sqlDayJobs</beanId>
+		</standardJob>	
+<!--
+ 		<standardJob name="后台任务演示程序1" 
+			enable="true" 
+			className="com.tisson.tds.job.DemoQuartsJob" callType="local"
+			sync="true" 
+			cronExpression="0 0/5 * * * ?">
+			<paramter1>3</paramter1>
+			<paramter2>4</paramter2>
+		</standardJob>	
+		<userJob name="demo-user-job" 
+			enable="true" 
+			className="sxma.cluster.test.job.DemoUserJob" 
+			methodName="executeJob" 
+			sync="true" 
+			cronExpression="30 * * * * ?">
+			<paramter1>3</paramter1>
+			<paramter2>4</paramter2>
+		</userJob>
+-->
+	</quartz>
+</root>
