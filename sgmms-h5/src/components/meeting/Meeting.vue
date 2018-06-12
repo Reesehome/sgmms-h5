@@ -6,7 +6,9 @@
             <mt-tab-item id="3">就餐记录</mt-tab-item>
         </mt-navbar>
         <div class="content">
-            <router-view></router-view>
+            <transition name="slide-left"> 
+                <router-view class="slide-left-el"></router-view>
+            </transition>
         </div>
     </div>
 </template>
@@ -30,7 +32,7 @@
             mtTabItem: TabItem,
         },
         watch:{
-            selected:function(newIndex,oldIndex){
+            selected: function(newIndex,oldIndex){
                 this.$router.push({path:this.route[newIndex] + this.conference_no})
             }
         }

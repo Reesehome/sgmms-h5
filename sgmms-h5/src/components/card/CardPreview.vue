@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <transition :name="transition">  
         <section class="card line-tb" @click="jumpToDetail">
             <div class="card_head">
                 <i v-show="icon" :class="icon" class="col_theme"></i>
@@ -10,7 +10,7 @@
                 <slot></slot>
             </div>
         </section>
-    </div>
+    </transition>
 </template>
 
 <script>
@@ -32,13 +32,14 @@
             statColor:{
                 type: String,
                 default: ''
-            }
+            },
+            transition: String,
         },
         methods: {
             jumpToDetail() {
                 this.$emit('jumpToDetail')
             },
-        },
+        }
     }
 </script>
 

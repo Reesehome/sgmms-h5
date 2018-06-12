@@ -11,21 +11,21 @@
                     <p class="skeleton_item"></p>
                 </div>
             </section>
+            
         </div>
-
         <div v-show="!skeleton">
             <card-preview v-for="item in dataList" :key="item.title" @jumpToDetail="jumpToDetail(item)" :statText="getMeetingStatName(item.status)"
-                :statColor="item.status" :title="item.title">
+            :statColor="item.status" :title="item.title" transition="slide-up">
                 <card-item icon="iconfont icon-time" label="开始时间: " :value="item.begin_time"></card-item>
                 <card-item icon="iconfont icon-time" label="结束时间: " :value="item.end_time"></card-item>
                 <card-item icon="iconfont icon-coordinates" label="会议地点: " :value="item.venue"></card-item>
                 <card-item icon="iconfont icon-group" label="会议人数: " :value="item.total_users"></card-item>
             </card-preview>
-            <div class="loading">
+            <div>
                 <mt-spinner type="triple-bounce" v-show="loading.stat"></mt-spinner>
                 <span v-show="!loading.stat" class="loading_msg">—————&nbsp;&nbsp;&nbsp;{{loading.msg}}&nbsp;&nbsp;&nbsp;—————</span>
             </div>
-        </div>
+        </div>   
     </div>
 </template>
 
@@ -47,7 +47,7 @@
                     msg: '暂无数据'
                 },
                 refetch: true,
-                skeleton: true
+                skeleton: true,
             }
         },
         components: {
