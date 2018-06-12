@@ -11,11 +11,10 @@
                     <p class="skeleton_item"></p>
                 </div>
             </section>
-            
         </div>
         <div v-show="!skeleton">
             <card-preview v-for="item in dataList" :key="item.title" @jumpToDetail="jumpToDetail(item)" :statText="getMeetingStatName(item.status)"
-            :statColor="item.status" :title="item.title" transition="slide-up">
+            :statColor="item.status" :title="item.title" transition="slide-up" :delayTime="item.delayTime" isContinue>
                 <card-item icon="iconfont icon-time" label="开始时间: " :value="item.begin_time"></card-item>
                 <card-item icon="iconfont icon-time" label="结束时间: " :value="item.end_time"></card-item>
                 <card-item icon="iconfont icon-coordinates" label="会议地点: " :value="item.venue"></card-item>
@@ -66,9 +65,11 @@
                     }
                     if (this.refetch) {
                         this.dataList = this.dataList.concat(res.content);
+                        this.setDelayTime()
                         return;
                     }
                     this.dataList = res.content
+                    this.setDelayTime()
                     this.skeleton = false
                 }).catch(err => {
                     this.$toast(err.message)
@@ -90,6 +91,15 @@
                         this.refetch = false
                     }
                 }
+            },
+            // 设置每个卡片进场动画延迟间隔为0.3s
+            setDelayTime(val = this.dataList) {
+                if (Array.isArray(val)) {
+                    this.dataList.forEach((item,i) => {
+                        item.delayTime = i * 0.3
+                    });
+                }
+                
             }
         },
         mounted() {

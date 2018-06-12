@@ -1,5 +1,5 @@
 <template>
-    <transition :name="transition">  
+    <transition :name="transition" @before-enter="beforeEnter" :isContinue="isContinue">
         <section class="card line-tb" @click="jumpToDetail">
             <div class="card_head">
                 <i v-show="icon" :class="icon" class="col_theme"></i>
@@ -29,16 +29,31 @@
                 type: String,
                 default: ''
             },
-            statColor:{
+            statColor: {
                 type: String,
                 default: ''
             },
             transition: String,
+            delayTime: {
+                type: Number,
+                default: 0
+            },
+            // isContinue属性为true，并且delayTime不为0时，才可有逐一过渡效果
+            isContinue: {
+                type: Boolean,
+                default: false
+            }
         },
         methods: {
             jumpToDetail() {
                 this.$emit('jumpToDetail')
             },
+            beforeEnter(el) {
+                if (this.isContinue) {
+                    el.style.transitionDelay = `${this.delayTime}s`
+                }
+                this.$emit('beforeEnter')
+            }
         }
     }
 </script>

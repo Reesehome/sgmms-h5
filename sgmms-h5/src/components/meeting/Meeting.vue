@@ -6,7 +6,7 @@
             <mt-tab-item id="3">就餐记录</mt-tab-item>
         </mt-navbar>
         <div class="content">
-            <transition name="slide-left"> 
+            <transition name="slide-left" appear> 
                 <router-view class="slide-left-el"></router-view>
             </transition>
         </div>

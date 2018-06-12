@@ -6,7 +6,7 @@ import router from './router'
 import { Toast,InfiniteScroll } from 'mint-ui'
 import { Auth } from './util/dataHandle.js'
 
-import 'mint-ui/lib/style.css'// 全局公共样式
+import 'mint-ui/lib/style.css'
 import '@style/common/reset.less'// 重置浏览器样式以及mint样式替换
 import '@style/iconfont/iconfont.css'// 字体图标样式文件
 Vue.config.productionTip = false
