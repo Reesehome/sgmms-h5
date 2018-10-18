@@ -1,5 +1,0 @@
-.dropdown-menu{left: 100%;top: 0;margin: 0;border-radius: 0;padding: 0;}
-.dropdown-submenu > li, .dropdown-menu > li{min-width: 200px;cursor: pointer;}
-.dropdown-submenu > .dropdown-menu{margin-top: -1px;}
-.dropdown-menu>li>a, .dropdown-submenu>li>a {position: relative;display: block;padding: 10px 15px;color: #337ab7;}
-.dropdown-menu>li>a:hover, .dropdown-submenu>li>a:hover{color: #23527c;}

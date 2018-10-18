@@ -21,41 +21,44 @@
 </template>
 
 <script>
-    import { CardPreview, CardItem } from '@cmpt/card'
-    import { getMeetingDetail } from '@api/api'
-    import { getMeetingStatName } from '@util/constants'
-    
-    export default {
-        data() {
-            return {
-                conference_no: this.$route.params.conference_no,
-                meetingData: {
-                    agendum:null,
-                    attention:null,
-                    attachment:null
-                }
-            }
-        },
-        components: {
-            CardPreview,
-            CardItem
-        },
-        methods: {
-            getMeetingDetail(){
-                getMeetingDetail(this.conference_no).then(res=>{
-                    this.meetingData = res;
-                    this.meetingData.status = getMeetingStatName(this.meetingData.status)
-                }).catch(err=>{
-                    this.$toast(res.description)
-                })
-            }
-        },
-        mounted(){
-            this.getMeetingDetail()
-        }
+import { CardPreview, CardItem } from "@cmpt/card";
+import { getMeetingDetail } from "@api/api";
+import { getMeetingStatName } from "@util/constants";
+
+export default {
+  data() {
+    return {
+      conference_no: this.$route.params.conference_no,
+      meetingData: {
+        agendum: null,
+        attention: null,
+        attachment: null
+      }
+    };
+  },
+  components: {
+    CardPreview,
+    CardItem
+  },
+  methods: {
+    getMeetingDetail() {
+      this.conference_no = "7a470f6c3b2b4e33bb6ecf7c9fec2b5d"; // 模拟数据，后期应删除
+      getMeetingDetail(this.conference_no)
+        .then(res => {
+          this.meetingData = res;
+          this.meetingData.status = getMeetingStatName(this.meetingData.status);
+        })
+        .catch(err => {
+          this.$toast(err.description);
+        });
     }
+  },
+  mounted() {
+    this.getMeetingDetail();
+  }
+};
 </script>
 
 <style lang="less" scoped>
-    @import url('../../assets/styles/meeting/detail.less');
+@import url("../../assets/styles/meeting/detail.less");
 </style>

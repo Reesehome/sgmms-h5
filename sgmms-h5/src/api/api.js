@@ -1,5 +1,6 @@
 import axios from '../util/intercept.js'
-let baseUrl = process.env.BASE_API || 'http://zain.site/sgmms-admin';
+// let baseUrl = process.env.BASE_API || 'http://zain.site/sgmms-admin'; // 有接口数据时用这个
+let baseUrl = 'http://localhost:8080/sgmms-admin'; // 模拟接口数据用这个
 let qs = require('qs')
 
 /**
@@ -33,7 +34,7 @@ export const loginRequest = params => {
  * @returns {AxiosPromise<any>}
  */
 export const getMeetingList = params => {
-    return axios.get(`${ baseUrl }/api/conference`, {params:params});
+    return axios.get(`${baseUrl}/api/conference`, { params: params });
 };
 /**
  * 获取会议详情
@@ -41,7 +42,7 @@ export const getMeetingList = params => {
  * @returns {AxiosPromise<any>}
  */
 export const getMeetingDetail = (conference_no) => {
-    return axios.get(`${ baseUrl }/api/conference/${conference_no}`);
+    return axios.get(`${baseUrl}/api/conference/${conference_no}`);
 };
 /**
  * 获取签到记录
@@ -49,7 +50,7 @@ export const getMeetingDetail = (conference_no) => {
  * @returns {AxiosPromise<any>}
  */
 export const getSignRecord = (conference_no) => {
-    return axios.get(`${ baseUrl }/api/conference/${conference_no}/attendance`);
+    return axios.get(`${baseUrl}/api/conference/${conference_no}/attendance`);
 };
 /**
  * 获取就餐记录
@@ -57,7 +58,7 @@ export const getSignRecord = (conference_no) => {
  * @returns {AxiosPromise<any>}
  */
 export const getMealRecord = (conference_no) => {
-    return axios.get(`${ baseUrl }/api/conference/${conference_no}/meal`);
+    return axios.get(`${baseUrl}/api/conference/${conference_no}/meal`);
 };
 /**
  * 提交就餐记录
@@ -65,7 +66,7 @@ export const getMealRecord = (conference_no) => {
  * @returns {AxiosPromise<any>}
  */
 export const postMeal = params => {
-    return axios.post(`${ baseUrl }/api/conference/${params.conference_no}/meal?meal_id=${params.meal_id}`)
+    return axios.post(`${baseUrl}/api/conference/${params.conference_no}/meal?meal_id=${params.meal_id}`)
 };
 /**
  * 提交签到记录
@@ -73,5 +74,5 @@ export const postMeal = params => {
  * @returns {AxiosPromise<any>}
  */
 export const postSign = params => {
-    return axios.post(`${ baseUrl }/api/conference/${params.conference_no}/attendance?attendance_id=${params.attendance_id}&lat=${params.lat}&lng=${params.lng}&location=${params.location}`)
+    return axios.post(`${baseUrl}/api/conference/${params.conference_no}/attendance?attendance_id=${params.attendance_id}&lat=${params.lat}&lng=${params.lng}&location=${params.location}`)
 };
