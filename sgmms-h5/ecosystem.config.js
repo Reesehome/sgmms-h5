@@ -1,5 +1,5 @@
 module.exports = {
-  apps : [{
+  apps: [{
     name: 'sgmms-h5_pm2',
     script: 'webpack-dev-server --inline --progress --config build/webpack.dev.conf.js',
 
@@ -17,14 +17,14 @@ module.exports = {
     }
   }],
 
-  deploy : {
-    production : {
-      user : 'reese',
-      host : '123.207.65.247',
-      ref  : 'origin/master',
-      repo : 'git@github.com:Reesehome/sgmms-h5.git',
-      path : 'C:/inetpub/wwwroot/sgmms',
-      'post-deploy' : 'npm install && pm2 reload ecosystem.config.js --env production'
+  deploy: {
+    production: {
+      user: 'reese',
+      host: '123.207.65.247',
+      ref: 'origin/master',
+      repo: 'git@github.com:Reesehome/sgmms-h5.git',
+      path: 'C:/inetpub/wwwroot/sgmms',
+      'post-deploy': 'git pull && npm install && pm2 reload ecosystem.config.js --env production'
     }
   }
 };
